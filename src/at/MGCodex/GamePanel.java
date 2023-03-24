@@ -16,7 +16,7 @@ public class GamePanel extends JPanel implements MouseListener {
     public static final int HEIGHT = 1000;
     public static boolean buff = false;
     public static boolean debuff = false;
-    public static StatsPanel stats;
+    public static GameStatePanel gameState;
 
     public boolean movePaddleLeft = false;
     public boolean movePaddleRight = false;
@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements MouseListener {
     private boolean gameOver = false;
     private boolean missed = false;
     private boolean cleared = false;
-    private boolean laser = false;
+    private boolean laserHasTarget = false;
 
     Timer timer;
 
@@ -136,13 +136,13 @@ public class GamePanel extends JPanel implements MouseListener {
 
             if (buff) {
                 imgLootText = greenLoot.get(index).getImgText();
-                stats.lootList.add(greenLoot.get(index).getText());
+                gameState.lootList.add(greenLoot.get(index).getText());
                 greenLoot.get(index).drop();
                 buff = false;
             }
             else if (debuff) {
                 imgLootText = redLoot.get(index).getImgText();
-                stats.lootList.add(redLoot.get(index).getText());
+                gameState.lootList.add(redLoot.get(index).getText());
                 redLoot.get(index).drop();
                 debuff = false;
             }
@@ -157,8 +157,8 @@ public class GamePanel extends JPanel implements MouseListener {
             pad.centerPosition();
             balls.get(0).centerPosition(pad);
             blockingBricks.clear();
-            stats.setLevel(stats.getLevel() + 1);
-            if (stats.getLevel() > 9) {
+            gameState.setLevel(gameState.getLevel() + 1);
+            if (gameState.getLevel() > 9) {
                 randomLevels = true;
             }
             displayTimeLaser = 0;
@@ -179,8 +179,8 @@ public class GamePanel extends JPanel implements MouseListener {
                     brick.setFalling(false);
                 }
             }
-            stats.setLife(stats.getLife() - 1);
-            stats.lootList.clear();
+            gameState.setLife(gameState.getLife() - 1);
+            gameState.lootList.clear();
             missed = true;
             timer.stop();
         }
@@ -192,23 +192,23 @@ public class GamePanel extends JPanel implements MouseListener {
                 balls.add(new Ball("pic\\Ball_red.png"));
                 imgGameState = loadImage("pic\\miss.png");
                 pad = new Paddle(WIDTH / 2 - 80, HEIGHT - 50, 160, 16, 10);
-                stats.setLife(stats.getLife() - 1);
-                stats.lootList.clear();
+                gameState.setLife(gameState.getLife() - 1);
+                gameState.lootList.clear();
                 missed = true;
                 timer.stop();
             }
         }
 
         // Game Over
-        if (stats.getLife() == 0) {
+        if (gameState.getLife() == 0) {
             imgGameState = loadImage("pic\\game_over.png");
-            if (stats.getScore() > stats.getLowestHighscore()) {
+            if (gameState.getScore() > gameState.getLowestHighscore()) {
                 String name = JOptionPane.showInputDialog("Enter your name!");
-                HighScoreManager.addHighscore(stats.getScore(), name);
+                HighScoreManager.addHighscore(gameState.getScore(), name);
             }
-            stats.setLife(3);
-            stats.setScore(0);
-            stats.setLevel(1);
+            gameState.setLife(3);
+            gameState.setScore(0);
+            gameState.setLevel(1);
             loadBricks();
             missed = false;
             gameOver = true;
@@ -216,17 +216,17 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     private void refreshStats() {
-        stats.setShots(pad.getShots());
-        stats.setBallSize(balls.get(0).getSize());
-        stats.setBallX(balls.get(0).getX());
-        stats.setBallY(balls.get(0).getY());
-        stats.setBallVelX(balls.get(0).getVelX());
-        stats.setBallVelY(balls.get(0).getVelY());
-        stats.setPadSize(pad.getWidth());
-        stats.setPadX(pad.getX());
-        stats.setPadY(pad.getY());
-        stats.setPadSpeed(pad.getSpeed());
-        stats.repaint();
+        gameState.setShots(pad.getShots());
+        gameState.setBallSize(balls.get(0).getSize());
+        gameState.setBallX(balls.get(0).getX());
+        gameState.setBallY(balls.get(0).getY());
+        gameState.setBallVelX(balls.get(0).getVelX());
+        gameState.setBallVelY(balls.get(0).getVelY());
+        gameState.setPadSize(pad.getWidth());
+        gameState.setPadX(pad.getX());
+        gameState.setPadY(pad.getY());
+        gameState.setPadSpeed(pad.getSpeed());
+        gameState.repaint();
     }
 
     private void loadBricks() {
@@ -251,7 +251,7 @@ public class GamePanel extends JPanel implements MouseListener {
             }
         }
         else {
-            levelMap = Level.getLevel(stats.getLevel());
+            levelMap = Level.getLevel(gameState.getLevel());
         }
 
         for (int row = 0; row < rows; row++) {
@@ -301,7 +301,7 @@ public class GamePanel extends JPanel implements MouseListener {
         command = () -> balls.add(new Ball("pic\\Ball_blue.png"));
         greenLoot.add(new Loot(command, loadImage("loot\\ExtraBall+.png"), " + Extra Ball"));
 
-        command = () -> stats.setLife(stats.getLife() + 1);
+        command = () -> gameState.setLife(gameState.getLife() + 1);
         greenLoot.add(new Loot(command, loadImage("loot\\Life+.png"), " + Life"));
 
         command = () -> balls.get(0).setSize(balls.get(0).getSize() + 5);
@@ -456,8 +456,8 @@ public class GamePanel extends JPanel implements MouseListener {
         }
         else if (missed) {
             g2.drawImage(imgGameState, WIDTH/2 - imgGameState.getWidth(this)/2, HEIGHT/2 - 80, null);
-            int offset = imgGameState.getWidth(this) / (stats.getLife()+1);
-            for (int i = 1; i < stats.getLife()+1; i++) {
+            int offset = imgGameState.getWidth(this) / (gameState.getLife()+1);
+            for (int i = 1; i < gameState.getLife()+1; i++) {
                 g2.drawImage(balls.get(0).getBALL_TEXTURE(),WIDTH/2 - imgGameState.getWidth(this)/2 + (offset * i - 15), HEIGHT/2 + 80, 30,30, null);
             }
 
@@ -471,7 +471,7 @@ public class GamePanel extends JPanel implements MouseListener {
         }
 
         pad.draw(g2);
-        if (laser && displayTimeLaser > 0) {
+        if (laserHasTarget && displayTimeLaser > 0) {
             for (Brick brick : bricks) {
                 if (brick.isMarked()) {
                     xTarget = brick.getX() + brick.getWidth()/2;
@@ -494,7 +494,7 @@ public class GamePanel extends JPanel implements MouseListener {
 
             displayTimeLaser--;
             if (displayTimeLaser == 0) {
-                laser = false;
+                laserHasTarget = false;
             }
         }
 
@@ -537,7 +537,7 @@ public class GamePanel extends JPanel implements MouseListener {
                     brick.setMarked(true);
                     brick.setAlive(false);
                     pad.removeShots();
-                    laser = true;
+                    laserHasTarget = true;
                     displayTimeLaser = 10;
                 }
             }
@@ -546,7 +546,7 @@ public class GamePanel extends JPanel implements MouseListener {
                     blockingBrick.setMarked(true);
                     blockingBrick.hit();
                     pad.removeShots();
-                    laser = true;
+                    laserHasTarget = true;
                     displayTimeLaser = 10;
                 }
             }

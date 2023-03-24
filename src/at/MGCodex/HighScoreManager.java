@@ -7,7 +7,7 @@ import java.util.*;
 // AI generated and modified
 public class HighScoreManager {
     private static final int MAX_HIGHSCORES = 5;
-    private static final String HIGHSCORES_FILE = "highscore.txt";
+    private static final String HIGHSCORES_FILE = "txt\\highscore.txt";
 
     public static void addHighscore(int score, String name) {
         ArrayList<HighScore> highScores = getHighscores();

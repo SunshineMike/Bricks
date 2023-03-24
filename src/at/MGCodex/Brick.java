@@ -15,7 +15,7 @@ public class Brick {
     private boolean isFalling;
     private Color color;
 
-    public static StatsPanel stats;
+    public static GameStatePanel gameState;
 
 
     public Brick(int x, int y, int width, int height, int loot, int hits, Color color) {
@@ -75,7 +75,7 @@ public class Brick {
         if (this.hits == 0) {
             this.isAlive = false;
         }
-        stats.setScore(stats.getScore() + 10);
+        gameState.setScore(gameState.getScore() + 10);
     }
 
     public void fall() {

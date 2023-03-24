@@ -13,7 +13,7 @@ public class BlockingBrick {
     private boolean isMarked;
     private boolean isAlive;
 
-    public static StatsPanel stats;
+    public static GameStatePanel gameState;
 
     public BlockingBrick(int x, int y, int width, int height, int hits, int speedX) {
         this.x = x;
@@ -37,7 +37,7 @@ public class BlockingBrick {
         if (this.hits == 0) {
             this.isAlive = false;
         }
-        stats.setScore(stats.getScore() + 10);
+        gameState.setScore(gameState.getScore() + 10);
     }
 
     public void collisionWalls() {

@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class StatsPanel extends JPanel {
+public class GameStatePanel extends JPanel {
 
     private int score = 0;
     private int level = 0;
@@ -30,13 +30,13 @@ public class StatsPanel extends JPanel {
     ArrayList<String> lootList = new ArrayList<>();
 
 
-    public StatsPanel() {
+    public GameStatePanel() {
         setPreferredSize(new Dimension(300,900));
         setBackground(Color.BLACK);
         setLayout(null);
-        GamePanel.stats = this;
-        Brick.stats = this;
-        BlockingBrick.stats = this;
+        GamePanel.gameState = this;
+        Brick.gameState = this;
+        BlockingBrick.gameState = this;
         logo = loadImage("pic\\Bricks.png");
     }
 

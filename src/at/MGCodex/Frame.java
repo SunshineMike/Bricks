@@ -12,7 +12,7 @@ import java.io.IOException;
 public class Frame extends JFrame implements KeyListener {
 
     GamePanel gamePanel;
-    StatsPanel statsPanel;
+    GameStatePanel gameStatePanel;
 
     public Frame() {
         setTitle("Bricks 3");
@@ -21,9 +21,9 @@ public class Frame extends JFrame implements KeyListener {
         setResizable(false);
         setLayout(new BorderLayout());
 
-        statsPanel = new StatsPanel();
+        gameStatePanel = new GameStatePanel();
         gamePanel = new GamePanel();
-        add(statsPanel, BorderLayout.EAST);
+        add(gameStatePanel, BorderLayout.EAST);
         add(gamePanel, BorderLayout.CENTER);
 
         addKeyListener(this);
