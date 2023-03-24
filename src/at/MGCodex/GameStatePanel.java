@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class GameStatePanel extends JPanel {
 
     private int score = 0;
-    private int level = 0;
+    private int level = 5;
     private int life = 3;
     private int shots = 0;
 
@@ -55,8 +55,8 @@ public class GameStatePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        Font header = new Font("Serif", Font.BOLD, 25);
-        Font basic = new Font("Serif", Font.BOLD, 20);
+        Font header = new Font(Font.SANS_SERIF, Font.BOLD, 25);
+        Font basic = new Font(Font.MONOSPACED, Font.BOLD, 20);
         Color mainColor = new Color(9, 55, 235);
         Color secColor = new Color(9, 55, 155);
 

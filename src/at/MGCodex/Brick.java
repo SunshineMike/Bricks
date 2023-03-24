@@ -18,7 +18,7 @@ public class Brick {
     public static GameStatePanel gameState;
 
 
-    public Brick(int x, int y, int width, int height, int loot, int hits, Color color) {
+    public Brick(int x, int y, int width, int height, int loot, int hits, Color color, boolean isAlive) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -26,8 +26,8 @@ public class Brick {
         this.loot = loot;
         this.hits = hits;
         this.color = color;
+        this.isAlive = isAlive;
 
-        this.isAlive = true;
         this.isMarked = false;
         this.isFalling = false;
     }

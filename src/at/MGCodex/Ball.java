@@ -162,6 +162,30 @@ public class Ball {
         }
     }
 
+    public void collisionBoss(Boss boss) {
+        int hitBoxDepth = 3;
+        if (boss.isAlive) {
+            Rectangle hitBoxTop = new Rectangle(boss.getX() + 1, boss.getY() - 1, boss.getWidth() - 2, hitBoxDepth);
+            Rectangle hitBoxBottom = new Rectangle(boss.getX() + 1, boss.getY() + boss.getHeight() - 1, boss.getWidth() - 2, hitBoxDepth);
+            Rectangle hitBoxLeft = new Rectangle(boss.getX() - 1, boss.getY() + 1, hitBoxDepth, boss.getHeight() - 2);
+            Rectangle hitBoxRight = new Rectangle(boss.getX() + boss.getWidth() - 1, boss.getY() + 1, hitBoxDepth, boss.getHeight() - 2);
+
+            if (this.getHitBox().intersects(hitBoxTop) && this.velY > 0) {
+                this.velY = -this.velY;
+                boss.hit();
+            } else if (this.getHitBox().intersects(hitBoxBottom) && this.velY < 0) {
+                this.velY = -this.velY;
+                boss.hit();
+            } else if (this.getHitBox().intersects(hitBoxLeft) && this.velX > 0) {
+                this.velX = -this.velX;
+                boss.hit();
+            } else if (this.getHitBox().intersects(hitBoxRight) && this.velX < 0) {
+                this.velX = -this.velX;
+                boss.hit();
+            }
+        }
+    }
+
     public void draw(Graphics2D g2) {
         g2.drawImage(BALL_TEXTURE, x, y, size, size, null);
     }

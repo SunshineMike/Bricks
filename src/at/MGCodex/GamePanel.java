@@ -28,10 +28,12 @@ public class GamePanel extends JPanel implements MouseListener {
     private int displayTimeLoot;
     private int xTarget;
     private int yTarget;
+    private int bossTimer;
     private boolean gameOver = false;
     private boolean missed = false;
     private boolean cleared = false;
     private boolean laserHasTarget = false;
+    private boolean bossFight = false;
 
     Timer timer;
 
@@ -45,6 +47,7 @@ public class GamePanel extends JPanel implements MouseListener {
     ArrayList<BlockingBrick> blockingBricks = new ArrayList<>();
     ArrayList<Loot> greenLoot = new ArrayList<>();
     ArrayList<Loot> redLoot = new ArrayList<>();
+    Boss boss;
 
 
     public GamePanel() {
@@ -63,6 +66,11 @@ public class GamePanel extends JPanel implements MouseListener {
 
     private void gameLoop() {
         timer = new Timer(DELAY, e -> {
+
+            if (bossFight) {
+                bossMove();
+            }
+
             removeDeadBricks();
             moveBlockingBrick();
             moveBrick();
@@ -73,6 +81,17 @@ public class GamePanel extends JPanel implements MouseListener {
             repaint();
             refreshStats();
         });
+    }
+
+    private void bossMove() {
+        if (bossTimer == 0) {
+            boss.attack();
+            bossTimer = boss.bossTimer;
+        }
+        bossTimer--;
+        if (!boss.isAlive) {
+            bossFight = false;
+        }
     }
 
     private void moveBlockingBrick() {
@@ -116,6 +135,9 @@ public class GamePanel extends JPanel implements MouseListener {
                 ball.collisionPaddle(pad);
                 ball.collisionBricks(bricks);
                 ball.collisionBlockingBrick(blockingBricks);
+                if (bossFight) {
+                    ball.collisionBoss(boss);
+                }
             }
             for (int i = 0; i < Math.abs(ball.getVelY()); i++) {
                 ball.moveY();
@@ -123,6 +145,9 @@ public class GamePanel extends JPanel implements MouseListener {
                 ball.collisionPaddle(pad);
                 ball.collisionBricks(bricks);
                 ball.collisionBlockingBrick(blockingBricks);
+                if (bossFight) {
+                    ball.collisionBoss(boss);
+                }
             }
         }
     }
@@ -151,14 +176,15 @@ public class GamePanel extends JPanel implements MouseListener {
 
     private void gameState() {
 
+
         // Level clear
-        if (isClear(bricks)) {
+        if (isClear(bricks) && !bossFight) {
             imgGameState = loadImage("pic\\lvl_clear.png");
             pad.centerPosition();
             balls.get(0).centerPosition(pad);
             blockingBricks.clear();
             gameState.setLevel(gameState.getLevel() + 1);
-            if (gameState.getLevel() > 9) {
+            if (gameState.getLevel() > 11) {
                 randomLevels = true;
             }
             displayTimeLaser = 0;
@@ -209,9 +235,11 @@ public class GamePanel extends JPanel implements MouseListener {
             gameState.setLife(3);
             gameState.setScore(0);
             gameState.setLevel(1);
-            loadBricks();
+            blockingBricks.clear();
+            bossFight = false;
             missed = false;
             gameOver = true;
+            loadBricks();
         }
     }
 
@@ -242,6 +270,10 @@ public class GamePanel extends JPanel implements MouseListener {
         int offsetY = 80;
         int[][] levelMap = new int[rows][cols];
 
+        if (gameState.getLevel() == 5 || gameState.getLevel() == 10) {
+            bossFight = true;
+        }
+
 
         if (randomLevels) {
             for (int row = 0; row < rows; row++) {
@@ -258,20 +290,23 @@ public class GamePanel extends JPanel implements MouseListener {
             for (int col = 0; col < cols; col++) {
                 int x = offsetX + (col * (brickWidth + spacer));
                 int y = offsetY + (row * (brickHeight + spacer));
-                if (levelMap[row][col] == 1) {
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 0, 1, color));
+                if (levelMap[row][col] == 0) {
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 0, 0, color, false));
+                }
+                else if (levelMap[row][col] == 1) {
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 0, 1, color, true));
                 }
                 else if (levelMap[row][col] == 2) {
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 0, 2, color));
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 0, 2, color, true));
                 }
                 else if (levelMap[row][col] == 3) {
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 0, 3, color));
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 0, 3, color, true));
                 }
                 else if (levelMap[row][col] == 4) {
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 1, 1, color));
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 1, 1, color, true));
                 }
                 else if (levelMap[row][col] == 5) {
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 2, 1, color));
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, 2, 1, color, true));
                 }
                 else if (levelMap[row][col] == 9) {
                     Random random = new Random();
@@ -287,7 +322,19 @@ public class GamePanel extends JPanel implements MouseListener {
                     } else {
                         loot = 0;
                     }
-                    bricks.add(new Brick(x, y, brickWidth, brickHeight, loot, hits, color));
+                    bricks.add(new Brick(x, y, brickWidth, brickHeight, loot, hits, color, true));
+                }
+                else if (levelMap[row][col] == 10) {
+                    Runnable attack = this::spawnBlockingBrick;
+                    boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack);
+                    bossFight = true;
+                    bossTimer = 300;
+                }
+                else if (levelMap[row][col] == 11) {
+                    Runnable attack = this::spawnBlockingBrick;
+                    boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack);
+                    bossFight = true;
+                    bossTimer = 300;
                 }
             }
         }
@@ -510,6 +557,10 @@ public class GamePanel extends JPanel implements MouseListener {
                 g2.drawImage(imgLootText, x, y, imgLootText.getWidth(this), imgLootText.getHeight(this), this);
             }
             displayTimeLoot--;
+        }
+
+        if (bossFight) {
+            boss.draw(g2);
         }
 
         for (Brick brick : bricks) {
