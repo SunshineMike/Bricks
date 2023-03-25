@@ -566,6 +566,13 @@ public class GamePanel extends JPanel implements MouseListener {
                     blockingBrick.setMarked(false);
                 }
             }
+            if (bossFight && boss.isAlive()) {
+                if(boss.isMarked()) {
+                    xTarget = boss.getX() + boss.getWidth()/2;
+                    yTarget = boss.getY() + boss.getHeight()/2;
+                    boss.setMarked(false);
+                }
+            }
             g2.setColor(Color.GREEN);
             g2.setStroke(new BasicStroke(3.0f));
             g2.drawLine(pad.getX() + pad.getWidth()/2, pad.getY(), xTarget, yTarget);
@@ -629,6 +636,15 @@ public class GamePanel extends JPanel implements MouseListener {
                 if (xClick > blockingBrick.getX() && xClick < blockingBrick.getX() + blockingBrick.getWidth() && yClick > blockingBrick.getY() && yClick < blockingBrick.getY() + blockingBrick.getHeight()) {
                     blockingBrick.setMarked(true);
                     blockingBrick.hit();
+                    pad.removeShots();
+                    laserHasTarget = true;
+                    displayTimeLaser = 10;
+                }
+            }
+            if (bossFight && boss.isAlive) {
+                if (xClick > boss.getX() && xClick < boss.getX() + boss.getWidth() && yClick > boss.getY() && yClick < boss.getY() + boss.getHeight()) {
+                    boss.setMarked(true);
+                    boss.hit();
                     pad.removeShots();
                     laserHasTarget = true;
                     displayTimeLaser = 10;
