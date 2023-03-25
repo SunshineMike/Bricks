@@ -88,6 +88,7 @@ public class GamePanel extends JPanel implements MouseListener {
         if (bossTimer1 == 0) {
             boss.attack1();
             bossTimer1 = boss.bossTimer1;
+            System.out.println("attack");
         }
         if (bossTimer2 == 0) {
             boss.attack2();
