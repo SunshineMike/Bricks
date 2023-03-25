@@ -462,11 +462,33 @@ public class GamePanel extends JPanel implements MouseListener {
         int width = random.nextInt(50, 350);
         int height = 40;
         int x = random.nextInt(0, WIDTH - width);
-        int y = 280;
+        int y;
         int hits = 6;
         int speed = random.nextInt(-10, 10);
 
-        blockingBricks.add(new BlockingBrick(x,y + ((height+20)*count),width,height,hits,speed));
+        if (count == 0) {
+            y = 280;
+        }
+        else {
+            int maxY = Integer.MIN_VALUE;
+            int minY = Integer.MAX_VALUE;
+            for (BlockingBrick blockingBrick : blockingBricks) {
+                if (blockingBrick.getY() > maxY) {
+                    maxY = blockingBrick.getY();
+                }
+                if (blockingBrick.getY() < minY) {
+                    minY = blockingBrick.getY();
+                }
+            }
+            if (minY > 280) {
+                y = 280;
+            }
+            else {
+                y = maxY + height + 20;
+            }
+        }
+
+        blockingBricks.add(new BlockingBrick(x,y,width,height,hits,speed));
     }
 
     private boolean isClear(ArrayList<Brick> bricks) {
