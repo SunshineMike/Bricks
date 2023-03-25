@@ -2,4 +2,4 @@ aaa 1050
 null 670
 null 600
 aaa 80
-x 0
+null 50

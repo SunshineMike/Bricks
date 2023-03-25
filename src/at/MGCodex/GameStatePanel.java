@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class GameStatePanel extends JPanel {
 
     private int score = 0;
-    private int level = 5;
+    private int level = 10;
     private int life = 3;
     private int shots = 0;
 

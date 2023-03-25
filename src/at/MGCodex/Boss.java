@@ -9,27 +9,37 @@ public class Boss {
     int width;
     int height;
     int hits;
-    int bossTimer;
+    int bossTimer1;
+    int bossTimer2;
     boolean isAlive;
     boolean isMarked;
-    Runnable attack;
+    Runnable attack1;
+    Runnable attack2;
 
-    public Boss(int x, int y, int width, int height, int hits, boolean isAlive, Runnable attack) {
+    public Boss(int x, int y, int width, int height, int hits, boolean isAlive, Runnable attack1, Runnable attack2) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.hits = hits;
         this.isAlive = isAlive;
-        this.attack = attack;
+        this.attack1 = attack1;
+        this.attack2 = attack2;
 
-        this.bossTimer = 600;
+        this.bossTimer1 = 300;
+        this.bossTimer2 = 400;
         this.isMarked = false;
     }
 
-    public void attack() {
-        if (this.attack != null) {
-            this.attack.run();
+    public void attack1() {
+        if (this.attack1 != null) {
+            this.attack1.run();
+        }
+    }
+
+    public void attack2() {
+        if (this.attack2 != null) {
+            this.attack2.run();
         }
     }
 

@@ -28,7 +28,8 @@ public class GamePanel extends JPanel implements MouseListener {
     private int displayTimeLoot;
     private int xTarget;
     private int yTarget;
-    private int bossTimer;
+    private int bossTimer1;
+    private int bossTimer2;
     private boolean gameOver = false;
     private boolean missed = false;
     private boolean cleared = false;
@@ -84,11 +85,16 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     private void bossMove() {
-        if (bossTimer == 0) {
-            boss.attack();
-            bossTimer = boss.bossTimer;
+        if (bossTimer1 == 0) {
+            boss.attack1();
+            bossTimer1 = boss.bossTimer1;
         }
-        bossTimer--;
+        if (bossTimer2 == 0) {
+            boss.attack2();
+            bossTimer2 = boss.bossTimer2;
+        }
+        bossTimer1--;
+        bossTimer2--;
         if (!boss.isAlive) {
             bossFight = false;
         }
@@ -332,16 +338,18 @@ public class GamePanel extends JPanel implements MouseListener {
                     bricks.add(new Brick(x, y, brickWidth, brickHeight, loot, hits, color, true));
                 }
                 else if (levelMap[row][col] == 10) {
-                    Runnable attack = this::spawnRandomBlockingBrick;
-                    boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack);
+                    Runnable attack1 = this::spawnRandomBlockingBrick;
+                    boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack1, null);
                     bossFight = true;
-                    bossTimer = 300;
+                    bossTimer1 = 300;
                 }
                 else if (levelMap[row][col] == 11) {
-                    Runnable attack = this::spawnRandomBlockingBrick;
-                    boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack);
+                    Runnable attack1 = () -> setBrickAlive(bricks);
+                    Runnable attack2 = () -> randomFallingBrick(bricks);
+                    boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack1, attack2);
                     bossFight = true;
-                    bossTimer = 300;
+                    bossTimer1 = 300;
+                    bossTimer2 = 600;
                 }
             }
         }
@@ -423,6 +431,30 @@ public class GamePanel extends JPanel implements MouseListener {
         else {
             System.err.println("Error: Loot index (getLootIndex())");
             return 0;
+        }
+    }
+
+    private void setBrickAlive(ArrayList<Brick> bricks) {
+        int maxY = Integer.MIN_VALUE;
+        for (Brick brick : bricks) {
+            if (!brick.isFalling() && brick.getY() > maxY) {
+                maxY = brick.getY();
+            }
+        }
+
+        ArrayList<Brick> bottomLineBricks = new ArrayList<>();
+        for (Brick brick : bricks) {
+            if (brick.getY() == maxY) {
+                bottomLineBricks.add(brick);
+            }
+        }
+        Random random = new Random();
+        if (bottomLineBricks.size() > 0) {
+            int randomIndex = random.nextInt(bottomLineBricks.size());
+            Brick selectedBrick = bottomLineBricks.get(randomIndex);
+            selectedBrick.setAlive(true);
+            selectedBrick.setHits(3);
+            selectedBrick.setLoot(0);
         }
     }
 
@@ -601,7 +633,7 @@ public class GamePanel extends JPanel implements MouseListener {
         }
 
         if (bossFight) {
-            boss.draw(g2, bossTimer);
+            boss.draw(g2, bossTimer1);
         }
 
         for (Brick brick : bricks) {

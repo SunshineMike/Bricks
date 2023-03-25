@@ -74,6 +74,7 @@ public class Brick {
         }
         if (this.hits == 0) {
             this.isAlive = false;
+            this.isFalling = false;
         }
         gameState.setScore(gameState.getScore() + 10);
     }
