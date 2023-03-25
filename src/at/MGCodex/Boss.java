@@ -27,7 +27,7 @@ public class Boss {
         this.attack2 = attack2;
 
         this.bossTimer1 = 300;
-        this.bossTimer2 = 400;
+        this.bossTimer2 = 800;
         this.isMarked = false;
     }
 

@@ -349,7 +349,7 @@ public class GamePanel extends JPanel implements MouseListener {
                     boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack1, attack2);
                     bossFight = true;
                     bossTimer1 = 300;
-                    bossTimer2 = 600;
+                    bossTimer2 = 800;
                 }
             }
         }
@@ -437,7 +437,7 @@ public class GamePanel extends JPanel implements MouseListener {
     private void setBrickAlive(ArrayList<Brick> bricks) {
         int maxY = Integer.MIN_VALUE;
         for (Brick brick : bricks) {
-            if (!brick.isFalling() && brick.getY() > maxY) {
+            if (!brick.isFalling() && brick.getY() > maxY && brick.getY() < 280) {
                 maxY = brick.getY();
             }
         }
