@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class GameStatePanel extends JPanel {
 
     private int score = 0;
-    private int level = 5;
+    private int level = 1;
     private int life = 3;
     private int shots = 0;
 
@@ -101,31 +101,19 @@ public class GameStatePanel extends JPanel {
         g2.setFont(header);
         g2.drawString("Last loot", 20,530);
         g2.setFont(basic);
-        int index = lootList.size()-1;
+
+        int index = lootList.size() - 1;
         int counter = 0;
-        if (index < 5) {
-            for (int i = index; i >= 0; i--) {
-                if (lootList.get(i).contains("+")) {
-                    g2.setColor(new Color(45, 154, 3));
-                }
-                else if (lootList.get(i).contains("-")) {
-                    g2.setColor(new Color(154, 4, 4));
-                }
-                g2.drawString(lootList.get(i), 50, 560 + (21 * counter));
-                counter++;
+        int start = Math.max(0, index - 5);
+
+        for (int i = index; i >= start; i--) {
+            if (lootList.get(i).contains("+")) {
+                g2.setColor(new Color(45, 154, 3));
+            } else if (lootList.get(i).contains("-")) {
+                g2.setColor(new Color(154, 4, 4));
             }
-        }
-        else {
-            for (int i = index; i >= index-5; i--) {
-                if (lootList.get(i).contains("+")) {
-                    g2.setColor(new Color(45, 154, 3));
-                }
-                else if (lootList.get(i).contains("-")) {
-                    g2.setColor(new Color(154, 4, 4));
-                }
-                g2.drawString(lootList.get(i), 50, 560 + (21 * counter));
-                counter++;
-            }
+            g2.drawString(lootList.get(i), 50, 560 + (21 * counter));
+            counter++;
         }
 
         g2.setColor(secColor);
