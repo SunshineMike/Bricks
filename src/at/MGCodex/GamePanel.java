@@ -488,39 +488,41 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     private void spawnRandomBlockingBrick() {
+        final int MIN_Y = 280;
+        final int MAX_Y = 700;
+        final int LANE_COUNT = 5;
+        final int LANE_HEIGHT = (MAX_Y - MIN_Y) / LANE_COUNT;
 
-        if (blockingBricks.size() < 5) {
+        if (blockingBricks.size() < LANE_COUNT) {
             Random random = new Random();
-            int count = blockingBricks.size();
             int width = random.nextInt(50, 350);
             int height = 40;
-            int x = random.nextInt(0, WIDTH - width);
+            int x;
             int y;
             int hits = 6;
             int speed = random.nextInt(-10, 10);
 
-            if (count == 0) {
-                y = 280;
-            }
-            else {
-                int maxY = Integer.MIN_VALUE;
-                int minY = Integer.MAX_VALUE;
+            int lane;
+            boolean validLane;
+            do {
+                validLane = true;
+                lane = random.nextInt(0, LANE_COUNT);
+                y = MIN_Y + (lane * LANE_HEIGHT) + ((LANE_HEIGHT - height) / 2);
+
                 for (BlockingBrick blockingBrick : blockingBricks) {
-                    if (blockingBrick.getY() > maxY) {
-                        maxY = blockingBrick.getY();
+                    int brickY = blockingBrick.getY();
+                    int brickLane = (brickY - MIN_Y) / LANE_HEIGHT;
+
+                    if (brickLane == lane) {
+                        validLane = false;
+                        break;
                     }
-                    if (blockingBrick.getY() < minY) {
-                        minY = blockingBrick.getY();
-                    }
                 }
-                if (minY > 280) {
-                    y = 280;
-                }
-                else {
-                    y = maxY + height + 20;
-                }
-            }
-            blockingBricks.add(new BlockingBrick(x,y,width,height,hits,speed));
+            } while (!validLane);
+
+            x = random.nextInt(0, WIDTH - width);
+
+            blockingBricks.add(new BlockingBrick(x, y, width, height, hits, speed));
         }
     }
 
