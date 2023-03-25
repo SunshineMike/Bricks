@@ -62,19 +62,19 @@ public class Frame extends JFrame implements KeyListener {
     }
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyChar() == 'a') {
+        if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A') {
             gamePanel.movePaddleLeft = true;
         }
-        else if (e.getKeyChar() == 'd') {
+        else if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D') {
             gamePanel.movePaddleRight = true;
         }
     }
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyChar() == 'a') {
+        if (e.getKeyChar() == 'a' || e.getKeyChar() == 'A') {
             gamePanel.movePaddleLeft = false;
         }
-        else if (e.getKeyChar() == 'd') {
+        else if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D') {
             gamePanel.movePaddleRight = false;
         }
     }

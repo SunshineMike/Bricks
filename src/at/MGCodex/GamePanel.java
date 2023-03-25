@@ -456,39 +456,40 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     private void spawnRandomBlockingBrick() {
-        Random random = new Random();
 
-        int count = blockingBricks.size();
-        int width = random.nextInt(50, 350);
-        int height = 40;
-        int x = random.nextInt(0, WIDTH - width);
-        int y;
-        int hits = 6;
-        int speed = random.nextInt(-10, 10);
+        if (blockingBricks.size() < 5) {
+            Random random = new Random();
+            int count = blockingBricks.size();
+            int width = random.nextInt(50, 350);
+            int height = 40;
+            int x = random.nextInt(0, WIDTH - width);
+            int y;
+            int hits = 6;
+            int speed = random.nextInt(-10, 10);
 
-        if (count == 0) {
-            y = 280;
-        }
-        else {
-            int maxY = Integer.MIN_VALUE;
-            int minY = Integer.MAX_VALUE;
-            for (BlockingBrick blockingBrick : blockingBricks) {
-                if (blockingBrick.getY() > maxY) {
-                    maxY = blockingBrick.getY();
-                }
-                if (blockingBrick.getY() < minY) {
-                    minY = blockingBrick.getY();
-                }
-            }
-            if (minY > 280) {
+            if (count == 0) {
                 y = 280;
             }
             else {
-                y = maxY + height + 20;
+                int maxY = Integer.MIN_VALUE;
+                int minY = Integer.MAX_VALUE;
+                for (BlockingBrick blockingBrick : blockingBricks) {
+                    if (blockingBrick.getY() > maxY) {
+                        maxY = blockingBrick.getY();
+                    }
+                    if (blockingBrick.getY() < minY) {
+                        minY = blockingBrick.getY();
+                    }
+                }
+                if (minY > 280) {
+                    y = 280;
+                }
+                else {
+                    y = maxY + height + 20;
+                }
             }
+            blockingBricks.add(new BlockingBrick(x,y,width,height,hits,speed));
         }
-
-        blockingBricks.add(new BlockingBrick(x,y,width,height,hits,speed));
     }
 
     private boolean isClear(ArrayList<Brick> bricks) {
