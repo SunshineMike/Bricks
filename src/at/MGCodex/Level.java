@@ -9,6 +9,7 @@ public class Level {
                 3 = Brick (3 Hit)
                 4 = Buff
                 5 = Debuff
+                8 = Blocking Brick
                 9 = Random
      */
 
@@ -18,7 +19,7 @@ public class Level {
                                 {0,0,0,0,0,0,0,0,0},
                                 {4,4,4,0,0,0,5,5,5},
                                 {0,0,0,0,0,0,0,0,0},
-                                {0,0,0,0,0,0,0,0,0}};
+                                {0,0,0,0,8,0,0,0,0}};
 
     static int[][] levelRaw1 = {{0,0,1,0,0,0,1,0,0},
                                 {0,0,0,1,0,1,0,0,0},

@@ -1,6 +1,7 @@
 package at.MGCodex;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class BlockingBrick {
 
@@ -48,6 +49,24 @@ public class BlockingBrick {
         else if (this.x + this.width > GamePanel.WIDTH) {
             this.x = GamePanel.WIDTH - this.width - 5;
             this.speedX = -this.speedX;
+        }
+    }
+
+    public void collisionBrick(ArrayList<BlockingBrick> blockingBricks, int index) {
+        for (int i = 0; i < blockingBricks.size(); i++) {
+            if (i != index){
+                Rectangle hitBox = new Rectangle(x,y,width,height);
+                Rectangle brickHitBox = new Rectangle(blockingBricks.get(i).getX(), blockingBricks.get(i).getY(), blockingBricks.get(0).getWidth(), blockingBricks.get(0).getHeight());
+
+                if (hitBox.intersects(brickHitBox) && this.speedX >= 0 && blockingBricks.get(i).getSpeedX() <= 0) {
+                    this.speedX = -this.speedX;
+                    blockingBricks.get(i).setSpeedX(-blockingBricks.get(0).getSpeedX());
+                }
+                else if (hitBox.intersects(brickHitBox) && this.speedX <= 0 && blockingBricks.get(i).getSpeedX() >= 0) {
+                    this.speedX = -this.speedX;
+                    blockingBricks.get(i).setSpeedX(-blockingBricks.get(0).getSpeedX());
+                }
+            }
         }
     }
 

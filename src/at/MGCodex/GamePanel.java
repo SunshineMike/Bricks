@@ -95,8 +95,11 @@ public class GamePanel extends JPanel implements MouseListener {
     }
 
     private void moveBlockingBrick() {
+        int index = 0;
         for (BlockingBrick blockingBrick : blockingBricks) {
             blockingBrick.move();
+            blockingBrick.collisionBrick(blockingBricks, index);
+            index++;
         }
     }
 
@@ -308,6 +311,10 @@ public class GamePanel extends JPanel implements MouseListener {
                 else if (levelMap[row][col] == 5) {
                     bricks.add(new Brick(x, y, brickWidth, brickHeight, 2, 1, color, true));
                 }
+                else if (levelMap[row][col] == 8) {
+                    spawnBlockingBrick(0, 290, 100, 40, 6, 3);
+                    spawnBlockingBrick(WIDTH - 100, 290, 100, 40, 6, -3);
+                }
                 else if (levelMap[row][col] == 9) {
                     Random random = new Random();
                     int hits = random.nextInt(1, 4);
@@ -325,13 +332,13 @@ public class GamePanel extends JPanel implements MouseListener {
                     bricks.add(new Brick(x, y, brickWidth, brickHeight, loot, hits, color, true));
                 }
                 else if (levelMap[row][col] == 10) {
-                    Runnable attack = this::spawnBlockingBrick;
+                    Runnable attack = this::spawnRandomBlockingBrick;
                     boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack);
                     bossFight = true;
                     bossTimer = 300;
                 }
                 else if (levelMap[row][col] == 11) {
-                    Runnable attack = this::spawnBlockingBrick;
+                    Runnable attack = this::spawnRandomBlockingBrick;
                     boss = new Boss(WIDTH/2 - 150, HEIGHT/2 - 400,300,80, 20, true, attack);
                     bossFight = true;
                     bossTimer = 300;
@@ -374,7 +381,7 @@ public class GamePanel extends JPanel implements MouseListener {
         command = () -> pad.removeShots();
         redLoot.add(new Loot(command, loadImage("loot\\Laser-.png"), " - Laser"));
 
-        command = this::spawnBlockingBrick;
+        command = this::spawnRandomBlockingBrick;
         redLoot.add(new Loot(command, loadImage("loot\\ToDo-.png"), " - Blocking Brick"));
 
         command = () -> randomFallingBrick(bricks);
@@ -444,7 +451,11 @@ public class GamePanel extends JPanel implements MouseListener {
         }
     }
 
-    private void spawnBlockingBrick() {
+    private void spawnBlockingBrick(int x, int y, int width, int height, int hits, int speed) {
+        blockingBricks.add(new BlockingBrick(x, y, width, height, hits, speed));
+    }
+
+    private void spawnRandomBlockingBrick() {
         Random random = new Random();
 
         int count = blockingBricks.size();
@@ -560,7 +571,7 @@ public class GamePanel extends JPanel implements MouseListener {
         }
 
         if (bossFight) {
-            boss.draw(g2);
+            boss.draw(g2, bossTimer);
         }
 
         for (Brick brick : bricks) {

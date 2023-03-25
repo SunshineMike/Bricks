@@ -40,14 +40,16 @@ public class Boss {
         }
     }
 
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2, int bossTimer) {
         g2.setColor(new Color(9, 55, 235));
         g2.drawRect(x,y,width,height);
-        for (int i = 1; i <= this.hits; i++) {
-            g2.drawRect(x + width/2 - (13*hits) / 2, y + 20, 13*hits, 40);
-            g2.setColor(new Color(11 * (20-hits), 38, 128));
-            g2.fillRect(x + width/2 - (13*hits) / 2, y + 20, 13*hits, 40);
-        }
+
+        g2.drawRect(x + width/2 - (13*hits) / 2, y + 30, 13*hits, 40);
+        g2.setColor(new Color(11 * (20-hits), 38, 128 - ((20-hits)*6)));
+        g2.fillRect(x + 1 + width/2 - (13*hits) / 2, y + 30 + 1, 13*hits - 2, 40 - 2);
+
+        g2.setColor(Color.YELLOW);
+        g2.fillRect(x + width/2 - (bossTimer/3) / 2, y + 10, bossTimer/3, 5);
     }
 
     //region Getter & Setter
