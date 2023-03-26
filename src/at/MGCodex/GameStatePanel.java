@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class GameStatePanel extends JPanel {
 
     private int score = 0;
-    private int level = 10;
+    private int level = 1;
     private int life = 3;
     private int shots = 0;
 
@@ -120,7 +120,7 @@ public class GameStatePanel extends JPanel {
         g2.setFont(header);
         g2.drawString("Highscore", 20,710);
         g2.setFont(basic);
-        ArrayList<HighScore> highscore = HighScoreManager.getHighscores();
+        ArrayList<HighScore> highscore = HighScoreManager.getHighScores();
         lowestHighscore = highscore.get(4).score;
         counter = 0;
         for (HighScore hs : highscore) {

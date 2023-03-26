@@ -11,7 +11,6 @@ public class Paddle {
     private int speed;
     private int shots;
 
-
     public Paddle(int x, int y, int width, int height, int speed) {
         this.x = x;
         this.y = y;

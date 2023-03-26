@@ -17,7 +17,6 @@ public class Ball {
     private int velY;
     private int size;
 
-
     public Ball(String picPath) {
         this.BALL_TEXTURE = loadImage(picPath);
         defaultValues();

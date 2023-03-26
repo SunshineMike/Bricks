@@ -39,7 +39,6 @@ public class Frame extends JFrame implements KeyListener {
         new Frame();
     }
 
-    // AI generated and modified
     private void setMouseCursor() {
         try {
             Toolkit toolkit = Toolkit.getDefaultToolkit();

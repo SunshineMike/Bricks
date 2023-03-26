@@ -4,13 +4,12 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-// AI generated and modified
 public class HighScoreManager {
     private static final int MAX_HIGHSCORES = 5;
     private static final String HIGHSCORES_FILE = "txt\\highscore.txt";
 
-    public static void addHighscore(int score, String name) {
-        ArrayList<HighScore> highScores = getHighscores();
+    public static void addHighScore(int score, String name) {
+        ArrayList<HighScore> highScores = getHighScores();
 
         highScores.add(new HighScore(score, name));
         highScores.sort(Comparator.comparingInt(h -> -h.score));
@@ -28,7 +27,7 @@ public class HighScoreManager {
         }
     }
 
-    public static ArrayList<HighScore> getHighscores() {
+    public static ArrayList<HighScore> getHighScores() {
         ArrayList<HighScore> highScores = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(HIGHSCORES_FILE))) {
@@ -40,7 +39,7 @@ public class HighScoreManager {
                 highScores.add(new HighScore(score, name));
             }
         } catch (NoSuchFileException e) {
-            // File not found, return empty high score list
+            //TODO File not found, return empty high score list
         } catch (IOException e) {
             System.err.println("Error reading high scores: " + e.getMessage());
         }

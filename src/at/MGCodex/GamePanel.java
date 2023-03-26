@@ -67,11 +67,9 @@ public class GamePanel extends JPanel implements MouseListener {
 
     private void gameLoop() {
         timer = new Timer(DELAY, e -> {
-
             if (bossFight) {
                 bossMove();
             }
-
             removeDeadBricks();
             moveBlockingBrick();
             moveBrick();
@@ -88,7 +86,6 @@ public class GamePanel extends JPanel implements MouseListener {
         if (bossTimer1 == 0) {
             boss.attack1();
             bossTimer1 = boss.bossTimer1;
-            System.out.println("attack");
         }
         if (bossTimer2 == 0) {
             boss.attack2();
@@ -240,7 +237,7 @@ public class GamePanel extends JPanel implements MouseListener {
             imgGameState = loadImage("pic\\game_over.png");
             if (gameState.getScore() > gameState.getLowestHighscore()) {
                 String name = JOptionPane.showInputDialog("Enter your name!");
-                HighScoreManager.addHighscore(gameState.getScore(), name);
+                HighScoreManager.addHighScore(gameState.getScore(), name);
             }
             gameState.setLife(3);
             gameState.setScore(0);

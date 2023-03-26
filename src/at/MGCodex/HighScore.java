@@ -10,6 +10,3 @@ class HighScore {
         this.name = name;
     }
 }
-
-
-
